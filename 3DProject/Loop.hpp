@@ -1,19 +1,21 @@
 #ifndef LOOP_HPP
 #define LOOP_HPP
 
-#include <windows.h>
+#include <Windows.h>
+#include "Graphics.hpp"
 
 
 class GameLoop
 {
 private:
-	HWND wndHandle;
+	//HWND *wndHandle;
+	Graphics graphics = {};
 
 public:
 	GameLoop();
 	virtual ~GameLoop();
 
-	bool getMainWindowHandle(HWND const wndHandle);
+	bool Init(HWND *wndHandle);
 
 };
 

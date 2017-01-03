@@ -8,8 +8,22 @@ GameLoop::~GameLoop()
 {
 }
 
-bool GameLoop::getMainWindowHandle(HWND const wndHandle)
+
+// Initializes the gameloop and all of its subclasses
+// Returns false if unsuccessful
+bool GameLoop::Init(HWND * wndHandle)
 {
-	this->wndHandle = wndHandle;
-	return this->wndHandle;
+	bool success = true;
+	try
+	{
+		graphics.Init(wndHandle);
+	}
+	catch (LPCTSTR e)
+	{
+		MessageBox(*wndHandle, e, L"An error occured", MB_OK);
+		success = false;
+		
+	}
+
+	return success;
 }

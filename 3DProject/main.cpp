@@ -1,6 +1,8 @@
+// USING UNICODE SETTING TO COMPILE
+
 #include <windows.h>
 
-#include "Constants.hpp"
+#include "Macros.hpp"
 #include "Loop.hpp"
 
 #pragma region Function Declarations
@@ -14,14 +16,16 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 {
 	MSG msg = { 0 };
 	GameLoop loop;
-	//HWND wndHandle = InitWindow(hInstance);
+	HWND wndHandle = InitWindow(hInstance);
 
-	if (loop.getMainWindowHandle(InitWindow(hInstance)))
+	if (wndHandle)
 	{
 		// Sucessfully initialized the window
 		//ShowWindow(wndHandle, nCmdShow);
-		Sleep(2000);
-	}
+		loop.Init(&wndHandle);
+		//Sleep(2000);
+	} else
+		MessageBox(0, L"Unable to create window", L"An error occured", MB_OK);
 
 	return 0;
 }
@@ -40,20 +44,20 @@ HWND InitWindow(HINSTANCE hInstance)
 												// CS_VREDRAW - Redraws the entire window if a movement or size adjustment changes the !height! of the client area
 	wcex.lpfnWndProc = WndProc;				// A pointer to the window procedure
 	wcex.hInstance = hInstance;				// A handle to the instance that contains the window procedure for the class
-	wcex.lpszClassName = "3D_Project";		// A pointer to a null-terminated string or is an atom. If lpszClassName is a string, it specifies the window class name
+	wcex.lpszClassName = L"3D_Project";		// A pointer to a null-terminated string or is an atom. If lpszClassName is a string, it specifies the window class name
 
 	// Attempt to register window class
 	if (!RegisterClassEx(&wcex))
 		return false;
 
 	// Adjust window size
-	RECT rc = { 0, 0, WIDTH, HEIGHT };
+	RECT rc = { 0, 0, M_WIDTH, M_HEIGHT };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
 	// Create window
 	HWND handle = CreateWindow(
-		"3D_Project",						// A null-terminated string or a class atom created by a previous call to the RegisterClass or RegisterClassEx function
-		"3D Project",						// The window name
+		L"3D_Project",						// A null-terminated string or a class atom created by a previous call to the RegisterClass or RegisterClassEx function
+		L"3D Project",						// The window name
 		WS_OVERLAPPEDWINDOW,				// The style of the window being created. Full list: https://msdn.microsoft.com/en-us/library/ms632600(v=vs.85).aspx
 		CW_USEDEFAULT,						// The initial horizontal position of the window
 		CW_USEDEFAULT,						// The initial vertical position of the window
