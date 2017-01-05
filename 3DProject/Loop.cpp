@@ -18,12 +18,10 @@ bool GameLoop::Init(HWND * wndHandle)
 	{
 		graphics.Init(wndHandle);
 	}
-	catch (LPCTSTR e)
+	catch (StrException &e)
 	{
-		MessageBox(*wndHandle, e, L"An error occured", MB_OK);
+		MessageBox(*wndHandle, e.toCharStr(), "An error occured", MB_OK);
 		success = false;
-		
 	}
-
 	return success;
 }

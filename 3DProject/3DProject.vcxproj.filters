@@ -16,6 +16,15 @@
     <Filter Include="Shader Files">
       <UniqueIdentifier>{d1fd4498-8efc-4641-9ba6-c115c63d8259}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader Files\Vertex">
+      <UniqueIdentifier>{4a9d4784-159f-4068-bada-e6dab19664f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files\Geometry">
+      <UniqueIdentifier>{bc95bf85-2702-41ff-ac12-bc2abcaa30c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files\Pixel">
+      <UniqueIdentifier>{081fbc05-98af-49de-952b-419332587319}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -25,6 +34,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Graphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,5 +50,19 @@
     <ClInclude Include="Macros.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shaders.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StrException.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="vshader_default.hlsl">
+      <Filter>Shader Files\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="pshader_default.hlsl">
+      <Filter>Shader Files\Pixel</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

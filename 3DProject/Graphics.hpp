@@ -4,8 +4,9 @@
 #include <Windows.h>
 #include <d3d11.h>
 #pragma comment (lib, "d3d11.lib")
-#include <comdef.h>
 
+#include "StrException.hpp"
+#include "Shaders.hpp"
 #include "Macros.hpp"
 
 class Graphics
@@ -19,8 +20,11 @@ private:
 
 	ID3D11Texture2D* depthTexture2D;
 	ID3D11DepthStencilView* depthStencilView;
+
+	Shaders shaders;
 	// PRIVATE FUNCTIONS
 	void CreateDirect3DContext(HWND *wndHandle);
+	void SetViewport();
 public:
 	Graphics();
 	virtual ~Graphics();

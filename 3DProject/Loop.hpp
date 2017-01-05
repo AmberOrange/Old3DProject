@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include "Graphics.hpp"
+#include "StrException.hpp"
 
 
 class GameLoop

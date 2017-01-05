@@ -5,6 +5,10 @@
 #define M_HEIGHT 480
 
 #define M_SAMPLE_COUNT 4
-#define M_WINDOWED FALSE
+#define M_WINDOWED TRUE
+
+#define M_VERTEX_SHADER_COUNT 1
+#define M_GEOMETRY_SHADER_COUNT 1
+#define M_PIXEL_SHADER_COUNT 1
 
 #endif

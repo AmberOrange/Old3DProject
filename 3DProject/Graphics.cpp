@@ -3,7 +3,7 @@
 void Graphics::CreateDirect3DContext(HWND *wndHandle)
 {
 	DXGI_SWAP_CHAIN_DESC scd = {};
-	wchar_t err_msg[250];				// Temporary error handling method
+	char err_msg[250];				// Temporary error handling method, make something better later
 
 	// fill the swap chain description struct
 	scd.BufferCount = 1;									// one back buffer
@@ -12,6 +12,8 @@ void Graphics::CreateDirect3DContext(HWND *wndHandle)
 	scd.OutputWindow = *wndHandle;							// the window to be used
 	scd.SampleDesc.Count = M_SAMPLE_COUNT;					// how many multisamples
 	scd.Windowed = M_WINDOWED;								// windowed/full-screen mode
+
+	unsigned int hello = Shaders::eVertexShader::vshader_default;
 
 	HRESULT hr = D3D11CreateDeviceAndSwapChain(NULL,
 		D3D_DRIVER_TYPE_HARDWARE,
@@ -52,35 +54,35 @@ void Graphics::CreateDirect3DContext(HWND *wndHandle)
 		depthStencilDesc.MiscFlags = 0;
 
 		hr = device->CreateTexture2D(&depthStencilDesc, NULL, &depthTexture2D);
-		if (!SUCCEEDED(hr))
-		{
-			_com_error err(hr);
-			wcscpy_s(err_msg, L"Error at CreateDirect3DContext\nCreateTexture2D:\n");
-			wcscat_s(err_msg, err.ErrorMessage());
-			throw err_msg;
-		}
+		if (FAILED(hr))
+			throw StrException("Error at CreateDirect3DContext\nCreateTexture2D:\n", hr);
 
 		hr = device->CreateDepthStencilView(depthTexture2D, NULL, &depthStencilView);
-		if (!SUCCEEDED(hr))
-		{
-			_com_error err(hr);
-			wcscpy_s(err_msg, L"Error at CreateDirect3DContext\nCreateDepthStencilView:\n");
-			wcscat_s(err_msg, err.ErrorMessage());
-			throw err_msg;
-		}
+		if (FAILED(hr))
+			throw StrException("Error at CreateDirect3DContext\nCreateDepthStencilView:\n", hr);
 
 		// ========
 
 		// set the render target as the back buffer
 		deviceContext->OMSetRenderTargets(1, &backbufferRTV, depthStencilView);
 	}
-	else {
-		
-		_com_error err(hr);
-		wcscpy_s(err_msg, L"Error at CreateDirect3DContext\nD3D11CreateDeviceAndSwapChain:\n");
-		wcscat_s(err_msg, err.ErrorMessage());
-		throw err_msg;
-	}
+	else throw StrException("Error at CreateDirect3DContext\nD3D11CreateDeviceAndSwapChain:\n", hr);
+}
+
+// Sets the viewport to the rasterizer
+// TODO: Any way to throw errors?
+void Graphics::SetViewport()
+{
+	D3D11_VIEWPORT vp;
+	vp.Width = (float)M_WIDTH;
+	vp.Height = (float)M_HEIGHT;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	deviceContext->RSSetViewports(1, &vp);	// Bind an array of viewports to the rasterizer stage of the pipeline.
+												// NumViewports - Number of viewports to bind
+												// *pViewports  - Array of viewports to bind
 }
 
 Graphics::Graphics()
@@ -94,4 +96,6 @@ Graphics::~Graphics()
 void Graphics::Init(HWND *wndHandle)
 {
 	this->CreateDirect3DContext(wndHandle);
+	this->SetViewport();
+	this->shaders.Init(this->device);
 }
